@@ -6,6 +6,9 @@
 [![GitHub commits](https://img.shields.io/github/commits-since/ustctug/ustcthesis/v2.2.3.svg)](https://github.com/ustctug/ustcthesis/commits/master)
 
 
+[![demo](demo.png)]
+
+
 --------------------------------------------------------------
 >本院论文采用较为老旧的word模板排版,在目录自动生成、引用、数学公式以及修改的灵活性、解耦合等等方面都有太多问题.word工具设计的初衷是给不擅长Tex工具的文科生、艺术生上手排版,作为理工科学生还是应该使用Tex或者LaTex上手排版.本模板修改自中国科学院大学学位论文LaTex模板.
 
