@@ -6,7 +6,7 @@
 [![GitHub commits](https://img.shields.io/github/commits-since/ustctug/ustcthesis/v2.2.3.svg)](https://github.com/ustctug/ustcthesis/commits/master)
 
 
-[![demo](demo.png)]
+![demo](demo.png)
 
 
 --------------------------------------------------------------
