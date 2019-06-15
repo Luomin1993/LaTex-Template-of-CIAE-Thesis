@@ -1,0 +1,202 @@
+\appendix
+\chapter{附录}
+
+\section{论分析数学与神经科学之间的关系}
+分析学是数学的一个分支学科（主要学科）。它是以微积分方法为基本工具，以函数（映射、关系等更丰富的内涵）为主要研究对象，以极限为基本思想的众多数学经典分支及其现代拓展的统称，简称分析。直观地讲，如果将数学划分为数值和符号两个大的方向，那么分析学无疑是数学数值部分的中流砥柱。
+
+巧合的是（实际上这里面存在一些必然性），人工智能也可以划分为神经网络为代表的连接主义和语义网络为代表的符号主义两个大的方向，这对应的也正是数学中数值和符号两个大的方向。因此，神经科学尤其是计算神经科学作为人工智能中连接主义的理论根源，和分析学有着千丝万缕的联系。
+
+概括性地讲，分析学和神经科学的联系包括但不仅限于以下内容：
+
+\begin{itemize}
+\item 逼近论的研究：函数逼近论研究用某些性质良好的函数逼近一般函数的可能性及误差（逼近阶）等性质，以及反过来用这些性质去刻画函数，这和如何设计人工神经网络(Artificial Neural Network,ANN)作为拟合任意复杂函数的问题是等价的。
+\item 凸分析的研究：主要研究一类重要的非线性函数——凸函数，以及对应的凸优化问题，凸优化数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。事实上当前人工智能方法都可以概括为如何设计一个凸代价函数$f_{\theta}(x)$且利用凸优化方法来找到全局最优参数$\theta^*$的问题。
+\item 流形问题：流形是局部具有欧几里得空间性质的空间，在数学中用于描述几何形体。当前把流形引入到人工智能及机器学习领域来主要有两种用途：一是将原来在欧氏空间中适用的算法加以改造，使得它工作在流形上，直接或间接地对流形的结构和性质加以利用；二是直接分析流形的结构，并试图将其映射到一个欧氏空间中，再在得到的结果上运用以前适用于欧氏空间的算法来进行学习。
+\end{itemize}
+
+在本节中阐释了一些分析学和神经科学的联系，目的是为了说明本文可能给读者带来的一个潜在疑惑，即本文以清醒猕猴的视神经实验为启发，为何又引入了许多测度论和泛函分析的内容，这样设计智能模型是否有些牵强附会？事实上，分析学和神经科学存在千丝万缕的联系，其中可挖掘的有价值的研究问题还很多，本文涉及的内容只是冰山一角。
+
+\section{本文的程序实现}
+在本文中，通过清醒猴的脑神经实验启发和引入实分析和泛函分析的数学理论，给出了类额叶的神经编码模型和概念推理模型，并在Linux系统上实现了计算机程序。程序使用Python的神经网络库Keras实现，在这里给出解码层和编码层的一种实现（这并非本文智能学习推理理论模型的唯一实现方式）的参考：
+
+编码层的实现：
+
+\begin{lstlisting}[language=C, caption=编码层的实现代码, label={code:first-code}]
+class PFC_Encode_Layer(Layer):
+    def __init__(self, output_dim, 
+                       activation='Gauss', 
+                       **kwargs):
+        self.output_dim = output_dim
+        self.L  = 2.0;
+        self.delta_l = 0.0001;
+        self.paras = np.random.rand(self.output_dim);
+        super(MyLayer, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        # 为该层创建一个可训练的权重 "self.kernel";
+        self.kernel = self.add_weight(name='kernel', 
+                                      shape=(input_shape[1], 
+                                      self.output_dim),
+                                      initializer='uniform',
+                                      trainable=True)
+        # 在最后调用训练更新方式
+        super(MyLayer, self).build(input_shape) 
+
+    def map(self,x):
+        # x = np.array([1.,2.,3.,1.,...,2.]);
+        #quad(np.exp(-x),0,np.inf)
+        output = [];
+        output_d = []
+        for i in range(slef.output_dim):
+            delta = self.paras[i];
+            output.append(  quad(lambda l:
+                            np.power(K.dot(x, self.kernel),
+                            delta,l,self.activation),
+                            - self.L/2,self.L/2) );
+            output_d.append(  quad(lambda l:
+                            np.power(K.dot(x, self.kernel),
+                            delta,l+self.delta_l,self.activation),
+                            -self.L/2,self.L/2) );
+        return np.array(output);
+
+    
+    def map_func(self,wx,para,l,activation):
+        if activation=="Gauss":
+           return np.exp((( l - wx )/para)**2/(-2))/
+                  (np.sqrt(2*np.pi)*para);
+
+    def call(self, x):
+        return self.map(x);
+
+    def compute_output_shape(self, input_shape):
+        return (input_shape[0], self.output_dim)        
+\end{lstlisting}
+
+解码层的实现：
+
+\begin{lstlisting}[language=Python, caption=解码层的实现代码, label={code:first-code}]
+class PFC_Decode_Layer(Layer):
+    def __init__(self, output_dim, 
+                       activation='Gauss',
+                       Encode_Weights, 
+                       Encode_Paras,
+                       **kwargs):
+        self.output_dim = output_dim
+        self.L  = 2.0;
+        self.delta_l = 0.0001;
+        self.paras = Encode_Paras;
+        self.weights = np.linalg.pinv(Encode_Weights);
+        super(MyLayer, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        # 为该层创建一个可训练的权重 "self.kernel";
+        self.kernel = self.add_weight(name='kernel', 
+                                      shape=(input_shape[1], 
+                                      self.output_dim),
+                                      initializer='uniform',
+                                      trainable=True)
+        # 在最后调用训练更新方式
+        super(MyLayer, self).build(input_shape) 
+
+    def map(self,x,input_d):
+        # x = np.array([1.,2.,3.,1.,...,2.]);
+        #quad(np.exp(-x),0,np.inf)
+        output = [];
+        l0 = 0;
+        for i in range(slef.output_dim):
+            delta = self.paras[i];
+            output.append(  self.weights*map(x,delta,l0,
+                                          input_d[i]) );
+        return np.array(output);
+
+
+    def en_map_func(self,wx,para,l,activation):
+        if activation=="Gauss":return np.exp((( l - wx )/para)
+                            **2/(-2))/(np.sqrt(2*np.pi)*para);
+    
+    def map_func(self,wx,para,l,input_d,activation):
+        # decode;
+        if activation=="Gauss":
+            return l-para*np.sqrt((-2)*np.log(((wx-input_d)/
+                   self.delta_l)*np.sqrt(2*np.pi)*para));
+
+    def call(self, x):
+        return self.map(x);
+
+    def compute_output_shape(self, input_shape):
+        return (input_shape[0], self.output_dim)     
+\end{lstlisting}
+
+为何采用Keras实现？首先Keras使用上手简单适合为学术研究理论制作Demo代码工程，其次使用Keras实现意味着和Keras内置的其他类型神经网络共同工作就会简单很多，而在本文中确实有这样的算法实现需求比如算法~\ref{algo:algo_41}。另外本文有自定义优化方式的需求（非梯度下降），使用Keras也能简单高效地满足。
+
+\section{清醒猴脑神经实验的一些中间结果}
+本文中清醒猴视觉皮层双光子成像实验相关内容系北京大学唐世明和余聪老师组的研究主题，在现场参与了一部分实验且得到唐世明老师的许可之后，本文创作过程中获得了一些研究的相关数据，并最终在本文实验陈述部分展示了这些结论。在这里，除去研究小组在“Long-term all-optical interrogation of cortical neurons in awake-behaving no” \upcite{Tang2018Large}一文中的已发表结果外，附加展示一些重要的补充结果（如图~\ref{fig:fig_39}）。
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=16cm]{figures/res_39.jpg} 
+\caption{神经皮层双光子成像实验的补充结果} \label{fig:fig_39}
+\note{样本图像刺激和对应的视神经皮层双光子成像图，黑色背景的图像是神经元经$Ca$染色进而成像的结果，从中可以得出神经编码即皮层激活态的稀疏表征、高度抽象的特点。} 
+\note{The sample image stimulus and the corresponding optic nerve cortical two-photon imaging images, the black background images are the results of neuron staining with $Ca$, which means the neural coding, the sparse representation of the cortical activation state, is highly abstracted.}
+\end{figure}
+
+
+\section{本文背后：硕士期间科研经历}
+本文的研究透露着交叉学科结合的味道，事实上创作背后融合了我硕士期间比较复杂的科研经历。到目前为止，我所做的研究工作都不能称之为真正的科研，只能评价为科研训练和科研经历，而我硕士期间的科研经历主要经历了独立研究、寻找老师探讨、再独立研究且迭代地向指导老师反馈的过程。
+
+在研二期间，我和导师商量了硕士毕业论文开题题目之后，他鼓励我广泛调研文献，向其他老师和工程师求教，寻找合适的交流和合作机会，并给予了我理论和写作指导，充足的自由度和时间，精神上的鼓励，工作硬件空间上的帮助，使我开始走出办公室寻找更多的研究机会。
+
+首先我找到了辐照材料实验室的贺新福老师，在他的指导下开始了关于辐照材料损伤实验的图像分析工作，我使用生成模型的方式，从实验条件参数采样从而生成了辐照材料损伤的实验图像。在这个研究中我收获了许多关于结合科研工程和统计学习方法的心得，最终和贺老师合作的论文“Generative Model for Material Experiments Based on Prior Knowledge and Attention Mechanism”也被人工智能顶会NIPS2018 Workshop接收。
+
+随后，在实习工作过程中有幸认识了新浪微博算法架构师董焕防前辈，他指导我在符号计算即公式自动推导和人工智能方法的结合上给出了关键的指导意见，并肯定了其价值。这个过程坚定了我对符号计算的研究兴趣，并最终让我认识到，数理逻辑的符号计算，和常识的符号逻辑推理，本质上是一回事，也就是我的分支研究方向最终拼合到了一块儿。
+
+在那之后，为了更多地探寻人工智能的理论根源和改进入口，我找到了中科院自动化所的余山老师开始从事脑科学和人工智能方法的交叉研究，这样一晃就是一年过去了，取得了一些阶段性的成果，并确定了神经符号(Neural Symbolic)的研究方向。这个经历让我认识到，科研是需要大量调研、累积、知识储备的，确定研究方向的代价也很大，但是一旦确定了就不能轻易放弃，要坚持。
+
+陈述硕士研究经历的意义在于解释本文创作思路的由来，并且断言了本文确实还有很多需要完善改进的空间，这是符合科研规律的。
+
+\section{word2vec算法提要}
+word2vec是一个计算word vector的开源工具。当我们在说word2vec算法或模型的时候，其实指的是其背后用于计算word vector的CBoW模型和Skip-gram模型。
+
+一个基本问题是如何计算一段文本序列在某种语言下出现的概率，统计语言模型给出了这一类问题的一个基本解决框架。对于一段文本序列$S=w_1, w_2, ... , w_T$，它的概率可以表示为：
+
+$$P(S)=P(w_1, w_2, ..., w_T)=\prod_{t=1}^Tp(w_t|w_1, w_2, ..., w_{t-1})$$
+
+即将序列的联合概率转化为一系列条件概率的乘积。问题变成了如何去预测这些给定上文下的条件概率$p(w_t|w_1,w_2,...,w_{t-1})$，其简化版本即为Ngram模型：
+
+$$p(w_t|w_1, w_2, ..., w_{t-1}) \approx p(w_t|w_{t-n+1}, ..., w_{t-1})$$
+
+其中$N$可$=1,2,3$，很少考虑$N>3$的情况。而Word2Vec的核心思维即为：\textbf{从Ngram模型的参数空间里导出词向量}，详情如算法~\ref{algo:algo_f}描述。
+
+
+%-------------------------A L G O ------------------------------
+\begin{algorithm}[htbp]
+\SetAlgoLined
+\KwData{一段文本序列$S=\{x_{1}, \ldots, x_{C} \}$,初始化神经网络的参数矩阵:将one-hot编码的输入向量连接到隐藏层的$V×N$维的权重矩阵$W$,将隐藏层连接到输出层的$N×V$维权重矩阵$W'$;}
+\KwResult{学得的词语在向量空间的表征矩阵$W'$;}
+
+\For{$x_j$ 来自文本序列$S=\{x_{1}, \ldots, x_{C} \}$}{
+    $h = \frac{1}{C}W\cdot (\sum_{i=1}^C x_i)$(计算隐藏层的输出);
+    $u_{j}=v^{'T}_{wj}\cdot h$(计算在输出层每个结点的输入,$v^{'T}_{w_j}$是输出矩阵$W'$的第$j$列);
+    $y_{c,j} =\mathbb{P}(w_{j}|w_1,...,w_c) = \frac{exp(u_{j})}{\sum^V_{i=1}exp(u_i)}$(计算输出层的输出);
+    $E = -\log \mathbb{P}(w_O|w_I) = -v_{w_o}^T \cdot h- \log \sum_{i=1}^V \exp(v^T_{w_i}\cdot h)$(计算损失函数:给定输入上下文的输出单词的条件概率);
+    $w^{'(new)} = w_{ij}^{'(old)}-\eta\cdot(y_{j}-t_{j})\cdot h_i$(权重矩阵$W'$的更新);
+    $w^{(new)} = w_{ij}^{(old)}-\eta\cdot\frac{1}{C}\cdot EH$(权重矩阵$W$的更新);
+}
+\caption{Word2Vec词向量提取算法(Continuous Bag-of-Words Model,CBoW形式)。}
+\label{algo:algo_f}
+\end{algorithm}
+%-------------------------R I T H M ------------------------------
+
+
+\section{本文的Latex模板使用说明}
+此宏包旨在建立一个简单易用的中国原子能科学研究院学位论文模板，包括硕士论文、博士论文。
+
+\begin{itemize}
+\item 本模板是以薛瑞尼维护的清华大学学位论文模板（ThuThesis）为基础制作的衍生版，本模板发布遵守LATEX Project Public License，使用前请认真阅读协议内容。
+
+\item 本模板依据《中国科学院大学研究生学位论文撰写规定》、《国科大版论文模板》，并参考中科院计算所提供的Word 版学位论文示例、中国原子能科学研究院研究生科提供的答辩材料包装封皮书的具体格式制作而成，旨在供中国原子能科学研究院毕业生撰写学位论文使用。
+
+\item 本模板仅为作者个人对官方文件的参考实现，不保证中国原子能科学研究院或各个研究所负责格式审查的老师不提意见。任何由于使用本模板而引起的论文格式审查问题均与本模板作者无关。
+
+\item 任何个人或组织以本模板为基础进行修改、扩展而生成的新的专用模板，请严格遵守LATEX Project Public License 协议。由于违反协议而引起的任何纠纷争端均与本模板作者无关。
+\end{itemize}

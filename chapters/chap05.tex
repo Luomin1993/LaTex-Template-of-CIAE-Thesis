@@ -1,0 +1,60 @@
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+\chapter{构建具有学习和推理能力的模型}
+\label{cha:intro}
+
+在本章中将承接上一章中基于清醒猕猴脑视觉皮层的双光子成像实验和其他关于脑额叶认知能力研究 \upcite{Paus2001Primate} \upcite{Valois1982Spatial} \upcite{Rhodes2010Apical} 构建的关于神经编码的模型，引入泛函分析的数学理论工具构建智能学习推理系统。首先会给概念的学习和推理任务下明确的数学定义（如图~\ref{fig:fig_24}），接着会引入和构建学习和推理能力的数学理论，再基于问题的定义和引入的数学理论给出学习和推理的智能模型的数学表达，最后会提出一些基于本文智能模型研究而得到的通用的数学结论。相关结论的详细的证明或者证明思路都被给出，另外还对抽象的数学内容给出了结合现实实例的分析。
+
+\section{概念学习和推理问题的定义}
+
+... ...
+
+\begin{thm}
+\textbf{(关于利用标准正交基概念映射计算的一个插值技巧)}设 $\{ \phi_a \}_{a\in A}$ 为标准正交基 $\iff (F^{R_1},F^{R_2})=\sum_{k=0}^{\infty} (F^{R_1},\phi_k)(\phi_k,F^{R_2}),\forall F^{R_1},F^{R_2} \in L^2(\mathcal{X})$；
+\end{thm}
+
+
+\begin{proof_idea}
+这个证明过程的内容和本节主题无关，故只阐述其证明思路。其基本思路是取 $\forall F^{R_1} \in L^2(\mathcal{X})$，再将其Fourier展开取 $\phi_k$ 的线性组合和 $T_N$ 来逼近它，同样类似地取 $F^{R_2}$ 再将其Fourier展开，按定理结论的形式推导，最终令 $N \rightarrow \infty$ 即可；
+\end{proof_idea}
+
+在完成上述定义和定理求证后，本文在Linux上编程实现了算法~\ref{algo:algo_51}，具体的学习任务完成效果见表~\ref{tab:tab_51}和图~\ref{fig:fig_28}。
+
+
+\begin{figure}   
+\centering   
+\subfigure[改变神经编码维度]{     
+\label{fig:fig_28}
+\includegraphics[width=16cm]{res_551}   }   
+\subfigure[改变概念编码维度]{     
+\includegraphics[width=16cm]{res_552}   }   
+\caption{不同维度编码的学习效果对比}
+\note{采用不同维度的神经编码空间和不同维度的概念编码空间时，学习效果的对比：总体来讲，随着维度的上升，学习损失函数值会下降，但是维度持续上升后，学习损失函数值的下降不再明显。}
+\note{When using different coding neural coding spaces and different dimensional concept coding spaces, the comparison of learning effects: In general, as the dimension increases, the learning loss function value will decrease, but after the dimension continues to rise, the learning loss function value decreases no longer obviously.}   
+\label{fig:subfig}
+\end{figure}
+
+
+\section{一些重要的数学结论}
+
+... ...
+
+\begin{proof}
+如果$x=\sum_{\nu=1}^{n} x_{\nu} e_{\nu}$，那么：
+
+$$ 
+\begin{aligned}\|T x\|^{2} &=\sum_{\mu=1}^{n}\left|\sum_{\nu=1}^{n} t_{\mu \nu} x_{\nu}\right|^{2} \\ & \leqslant \sum_{\mu=1}^{n}\left(\sum_{\nu=1}^{n}\left|t_{\mu \nu}\right|\left|x_{\nu}\right|\right)^{2} \\& {\leqslant \sum_{\mu=1}^{n}\left(\sum_{\nu=1}^{n}\left|t_{\mu \nu}\right|^{2}\right)\left(\sum_{\nu=1}^{n}\left|x_{\nu}\right|^{2}\right)} \\& {=\left(\sum_{\mu=1}^{n} \sum_{\nu=1}^{n}\left|t_{\mu \nu}\right|^{2}\right)\|x\|^{2}}\end{aligned}
+$$
+
+因此$\|T\| \leqslant\left(\sum_{\mu=1}^{n} \sum_{\nu=1}^{n}\left|t_{\mu \nu}\right|^{2}\right)^{\frac{1}{2}}$；
+
+对任意$\nu$，$T e_{\nu}=\sum_{\mu=1}^{n} t_{\mu \nu} e_{\mu}$，所以$\left\|T e_{\nu}\right\|=\left(\sum_{\mu=1}^{n}\left|t_{\mu \nu}\right|^{2}\right)^{\frac{1}{2}}$，故有$\|T\| \geqslant\left(\sum_{\mu=1}^{n}\left|t_{\mu \nu}\right|^{2}\right)^{\frac{1}{2}}$。于是可得$\max_{\nu} \left(\sum_{\mu=1}^{n}\left|t_{\mu \nu}\right|^{2}\right)^{\frac{1}{2}} \leqslant\|T\|$；证毕。
+\end{proof}
+
+
+\section{本章总结}
+基于类额叶连续皮质神经编码模型，本章引入了和智能认知原理联系更紧密的泛函分析数学理论，给出了智能学习推理系统的数学形式和具体的计算方法。泛函分析的数学理论运用函数论，几何学，现代分析数学的观点来研究无限维向量空间上的泛函，算子和极限理论，看似和智能认知学习没有联系，但是在深入分析了猕猴视神经皮层的双光子成像和其他对于生物脑前额叶的研究实验结论后，本文阐述了它们之间的相似关联之处，利用分析学中的一些基本概念工具，构建了模型。和上一章类似，本文在引入数学理论工具完成算法构建之后，又产出了一些关于泛函分析分支的有意义的数学通用结论，相当于一定程度上对理论的补充。为了检验本文提出的智能学习推理系统并非只是仿造生物实验结论和堆砌数学理论的产物，在下一章中将给出模型的具体应用并开发计算机程序实现来检验理论的可行性。

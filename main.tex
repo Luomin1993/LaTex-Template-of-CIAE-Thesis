@@ -1,0 +1,76 @@
+%!TEX encoding = UTF-8 Unicode
+%!TEX program = xelatex
+
+\documentclass[master]{ustcthesis}
+% bachelor|master|doctor
+\usepackage{ustcextra}
+\usepackage{subfigure}
+\graphicspath{{figures/}}
+%\bibliographystyle{ustcauthoryear}
+% \bibliographystyle{ustcnumerical}
+\newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}}
+
+\title{类额叶智能模型\\的设计和应用研究}
+\author{罗敏中}
+\major{应用数学}
+\advisor{吕建友\ 高工}
+\submitdate{二〇一九年四月}
+%\secrettext{机密\quad 小于等于20年}   % 内部|秘密|机密，注释本行则不保密
+\depart{信息中心}
+
+\entitle{The Research of the Design and Application \\of Cortex-like Intelligent Model}
+\enauthor{Mincong Luo}
+\enmajor{Applied Mathematics}
+\enadvisor{Prof. Jianyou Lv}
+\ensubmitdate{April, 2019}
+%\ensecrettext{Confidential\quad Less than or equal to 20 years}  % Internal|Secret|Confidential
+
+\begin{document}
+
+\maketitle
+
+%
+% 本科论文:
+%   frontmatter: 致谢、目录、中文摘要、英文摘要
+%   mainmatter: 正文章节、参考文献
+%   appendix: 附录
+%
+% 硕博论文:
+%   frontmatter: 中文摘要、英文摘要、目录、符号说明
+%   mainmatter: 正文、参考文献
+%   appendix: 附录
+%   backmatter: 致谢、发表论文
+%
+
+\frontmatter
+\input{chapters/abstract}
+\tableofcontents
+\listoffigures
+\listoftables
+\listofalgorithms  % 算法索引，如不需要，可直接注释掉本行
+% \input{chapters/notation}
+
+\newtheorem{proof_idea}{证明思路}
+\newtheorem{thm}{定理}
+
+\mainmatter
+%\input{chapters/cover}
+\input{chapters/chap01}
+\input{chapters/chap02}
+\input{chapters/chap03}
+\input{chapters/chap04}
+\input{chapters/chap05}
+\input{chapters/chap06}
+\input{chapters/chap07}
+\bibliographystyle{unsrt}%{alpha}
+\bibliography{bib/refs}
+
+%\appendix{chapters/appendix}
+%\chapter{论文规范}
+
+\backmatter
+\input{chapters/appendix}
+\input{chapters/acknowledgements}
+\input{chapters/publications}
+
+\end{document}

@@ -1,0 +1,101 @@
+%%
+%% This is file `ustcextra.sty':
+%% extra packages and configuration.
+%%
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{ustcextra}
+
+% 表格：
+% 三线表
+\RequirePackage{booktabs}
+% 跨页表格
+\RequirePackage{longtable}
+
+% 数学：
+\RequirePackage{amsmath,amsthm,amssymb}
+% 数学定理：
+% 以下定义数学定理环境默认风格为 ustcplain。
+\newtheoremstyle{ustcplain}%
+    {}{}%
+    {}{2\ccwd}%
+    {\bfseries}{}%
+    {\ccwd}{}
+\theoremstyle{ustcplain}
+% 定义新的定理
+\ifustc@opt@english
+  \newcommand\ustc@assertionname{Assertion}
+  \newcommand\ustc@axiomname{Axiom}
+  \newcommand\ustc@corollaryname{Corollary}
+  \newcommand\ustc@definitionname{Definition}
+  \newcommand\ustc@examplename{Example}
+  \newcommand\ustc@lemmaname{Lemma}
+  \newcommand\ustc@proofname{Proof}
+  \newcommand\ustc@propositionname{Proposition}
+  \newcommand\ustc@remarkname{Remark}
+  \newcommand\ustc@theoremname{Theorem}
+\else
+  \newcommand\ustc@assertionname{断言}
+  \newcommand\ustc@axiomname{公理}
+  \newcommand\ustc@corollaryname{推论}
+  \newcommand\ustc@definitionname{定义}
+  \newcommand\ustc@examplename{例}
+  \newcommand\ustc@lemmaname{引理}
+  \newcommand\ustc@proofname{证明}
+  \newcommand\ustc@propositionname{命题}
+  \newcommand\ustc@remarkname{注}
+  \newcommand\ustc@theoremname{定理}
+\fi
+\newtheorem{theorem}                {\ustc@theoremname}     [chapter]
+\newtheorem{assertion}  [theorem]   {\ustc@assertionname}
+\newtheorem{axiom}      [theorem]   {\ustc@axiomname}
+\newtheorem{corollary}  [theorem]   {\ustc@corollaryname}
+\newtheorem{lemma}      [theorem]   {\ustc@lemmaname}
+\newtheorem{proposition}[theorem]   {\ustc@propositionname}
+\newtheorem{definition}             {\ustc@definitionname}  [chapter]
+\newtheorem{example}                {\ustc@examplename}     [chapter]
+\newtheorem*{remark}                {\ustc@remarkname}
+% \pkg{amsthm} 单独定义了 proof 环境，这里重新定义以满足格式要求。
+% 原本模仿 \pkg{amsthm} 写成 |\item[\hskip\labelsep\hskip2\ccwd #1\hskip\ccwd]|，
+% 但是却会多出一些间隙。
+\renewenvironment{proof}[1][\proofname]{\par
+    \pushQED{\qed}%
+    \normalfont \topsep6\p@\@plus6\p@\relax
+    \trivlist
+        \item\relax\hskip2\ccwd
+        \textbf{#1}
+        \hskip\ccwd\ignorespaces
+    }{%
+    \popQED\endtrivlist\@endpefalse
+}
+\renewcommand\proofname\ustc@proofname
+
+% 算法和代码：
+% 算法环境
+\RequirePackage[boxed, algochapter, lined, linesnumbered]{algorithm2e}
+\ifustc@opt@english
+  \renewcommand\listalgorithmcfname{List of Algorithms}
+  \renewcommand\algorithmcfname{Algorithm}
+\else
+  \renewcommand{\listalgorithmcfname}{算法索引}
+  \renewcommand{\algorithmcfname}{算法}
+\fi
+% 代码环境
+\RequirePackage{listings}
+\lstset{
+    basicstyle=\small\ttfamily,
+    xleftmargin=2pc,
+    xrightmargin=2pc,
+    frame=single,
+    columns=flexible,
+    numbers=left,
+}
+\ifustc@opt@english
+  \renewcommand\lstlistlistingname{List of Code}
+  \renewcommand\lstlistingname{Code}
+\else
+  \renewcommand{\lstlistlistingname}{代码索引}
+  \renewcommand{\lstlistingname}{代码}
+\fi
+\endinput
+%%
+%% End of file `ustcextra.sty'.

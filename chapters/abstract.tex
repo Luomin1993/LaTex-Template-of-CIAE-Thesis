@@ -1,0 +1,50 @@
+﻿\begin{abstract}
+  人工智能(Artificial Intelligence)的研究试图赋予计算机类人的智能并学习知识且进行推理的能力。该研究涵盖知识范围广并且具有重要的科学意义和巨大的应用价值。从学科建设与发展水平的角度看，人工智能作为一个开放性的近代兴起的研究方向，是一个典型的涉及多个领域的交叉学科问题，涵盖但不仅仅包含计算机科学，统计学，脑神经科学，控制科学，符号逻辑学等多个学科。同时，作为具备预测和推理泛化能力的类脑智能关键技术，人工智能技术在数理科学、语言文学、工程学等领域具有潜在的应用前景。
+
+  经过自上世纪50年代以来的几轮人工智能热潮的发展,目前人工智能的最高水平在推荐系统、计算机视觉、自然语言处理、基于Agent的强化学习上都取得了显著的进步，但是当前的人工智能仅仅相当于类脑智能的视神经皮层的功能，距离真正的类人水平的智能核心\textbf{推理的学习和泛化}能力还有较远差距，而推理的学习和泛化能力根据脑神经科学研究主要是人类大脑内侧颞前额叶皮质层主导的；因此，基于以上分析，本文主要依据以下几个核心思路来开发鲁棒性强、样本学习效率高、泛化能力强的智能学习推理系统(Intelligent Learning and Reasoning System)：借鉴脑神经实验带来的启发式证据、分析主流人工智能方法的理论和性能不足、构建基于生物实验的等价数学模型并引入严格的数学理论证明其理论有效性、开发计算机程序将本文模型应用于数理、工程、文学的智能场景来验证模型的可行性。本文的主要贡献：
+  
+  % \begin{itemize}
+  %   \item \textbf{分析脑科学的神经生物实验结论来获得经验依据}： 根据硕士期间参与的关于猕猴大脑视觉神经的双光子成像实验,通过分析实验过程原理和实验数据的结论，我们得到了一系列有启发意义的关于生物大脑对客观世界物体的具象和抽象概念编码的经验现象，根据这些经验现象，我们可以合理地推测脑皮质层编码的理论原理。
+  %   \item \textbf{根据生物实验和数学理论论证当前主流人工智能理论的不足}： 针对在当前人工智能理论中汗牛充栋的全局误差代价函数和梯度下降理论(Gradient-based AI)，本文通过分析生物学实验的结论揭示了在大脑神经系统里不存在梯度下降和误差回传这些常用的优化手段，又通过数学理论推导了关于基于误差梯度下降的深度学习的一个不等式下界，从生物学原理和数学理论两部分论证了当前主流的收集全局系统代价然后对参数求偏导进行梯度下降优化的做法存在缺陷。
+  %   \item \textbf{基于生物实验结论建立基本的等价数学模型并开始加强}： 基于生物实验的原理本文建立了基本的数学定义，这个基本的数学定义只给出了和生物原理不矛盾的等价数学抽象，基于概率论和测度论的数学理论，本文在建立的基本数学定义上加强推导，给出了完整的类颞前额叶皮质层的编码数学模型，即渗流连续皮质层编码模型。
+  %   \item \textbf{根据基本的模型构建完整的智能学习推理系统}: 首先我们对客观世界中存在的抽象概念给出了数学定义，然后拆分并分别定义了学习识别能力和泛化推理能力。学习能力和泛化能力都是基于样本的，智能系统根据样本先学习样本以具备识别相似样本的能力，然后才能具备泛化推理类似情形的能力。在这个数学系统的构建中本文引入了很多泛函分析的数学工具，有意义的是通过推导这个智能学习推理系统的数学原理，本文推导得到了一些和泛函分析相关的有趣数学命题和定理。
+  %   \item \textbf{将系统分别应用于科学、工程、文学场景验证其实用性}: 为了验证智能学习推理系统不仅仅是停留在文本上的数学理论，通过在Linux系统上用gcc/g++和c++/python语言，本文构建了几个不同场景的智能学习推理任务来编码实现智能学习推理系统的应用。科学方面的任务本文使用逻辑推理要求高的数学定理证明任务来测试智能学习推理系统执行高级数理逻辑演绎的能力；工程方面的任务本文选取核电站回路智能控制的任务来检验智能学习推理系统的决策能力；文学方面我们选择古典名著《红楼梦》来验证智能学习推理系统对于语言文本符号处理挖掘信息的能力。    
+  % \end{itemize}
+
+  %本论文基于上述研究思路，给出了关于智能学习推理系统的完整设计过程：从生物实验出发总结生物原理的结论，依据结论设计不有悖于生物智能原理的基本数学模型，通过引入概率论和测度论的数学工具推导出了比主流人工智能系统更严谨的智能系统，在此基础上加强并引入一些泛函分析的数学工具使系统具备了学习识别能力和泛化推理能力，最终将理论付诸实践，给出了系统在多个背景差异很大的场景的应用实例验证了系统的可行性。
+
+  % \begin{itemize}
+  % \item \textbf{细致分析清醒猕猴经视神经双光子成像实验  并给出了有意义结论}：清醒猕猴经视神经双光子成像实验是揭示灵长类动物大脑皮质层关于客观物体进行特征编码原理的高质量实验，根据参与实验和对实验数据的分析，本文给出了很多有意义的关于脑神经皮层编码原理的结论和推测。
+  % \item \textbf{引入严谨的数学理论构建了能学习推理系统}： 当前主流人工智能的研究由计算机科学主导，数学严谨性不够，且在效果上也存在限制和缺陷；本文根据实验原理，引入了多个交叉数学分支理论工具来构建关于具备智能学习识别能力和推理泛化能力的系统，并在数学理论上证明了其方法的收敛性和优越性。
+  % \item \textbf{在构建本文数学模型的过程中同时给出了一些有意义的数学结论}： 在引入多个交叉数学分支理论工具来构建关于智能学习推理系统的同时，本文通过推导也得到了一些通用的涉及多个数学分支理论的有意义的结论定理。
+  % \item \textbf{开发了关于多个应用场景的高度可重用程序}：结合本文的数学理论，在Linux下本文开发于多个应用场景的高度可重用计算机程序并开源了源代码以验证本文提出的智能系统的可行性并推进本文理论的研究成果。
+
+  % \end{itemize}
+
+  \begin{itemize}
+  \item \textbf{细致分析清醒猕猴经视神经双光子成像实验并给出了有意义结论}：这使得本文的模型设计研究可借鉴生物原理机制。
+  \item \textbf{引入严谨的数学理论构建了能学习推理系统并给出了有意义的数学结论}：本文的模型和数学理论的充分融合使得研究结果具备理论严谨性。
+  \item \textbf{开发了关于多个应用场景的高度可重用程序}：这证明了本文的模型在多个应用场景上具备可行性。
+  \end{itemize}
+
+
+  本文不但在人工智能理论层面具有一定的参考价值，更关键的是本文的研究结论和应用开发对于设计开发鲁棒、实用的人工智能系统具有一定的借鉴意义，所提出的若干关键技术已经获得了实际应用并取得了不错的效果。
+
+\keywords{类脑智能\zhspace{} 学习和推理系统\zhspace{} 计算神经科学\zhspace{} 实分析和泛函分析\zhspace{} Linux编程\zhspace{} }
+\end{abstract}
+
+\begin{enabstract}
+The research of artificial intelligence tries to endow computer humans with intelligence and the ability to learn knowledge and reasoning. The research covers a wide range of knowledge and has important scientific significance and great application value. From the perspective of discipline construction and development level, AI, as an open and rising research direction in modern times, is a typical cross-problem involving many fields, covering but not only computer science, statistics, brain neuroscience, control science, semiotic logic and other disciplines. At the same time, as a key technology of brain-like intelligence with generalization ability of prediction and reasoning, artificial intelligence technology has potential application prospects in mathematical science, language and literature, engineering and other fields.
+
+After the development of several rounds of artificial intelligence boom since 1950s, the highest level of AI has made remarkable progress in recommendation system, computer vision, natural language processing and agent-based reinforcement learning. But the current AI is only equivalent to the function of optic nerve cortex of brain-like intelligence, which is far from the core of real human-like intelligence. There is still a long way to go between rational learning and generalization, reasoning learning, and generalization ability is mainly dominated by the medial temporal prefrontal cortex of human brain according to neuroscience research. Therefore, based on the above analysis, this paper mainly develops an intelligent learning and reasoning system with strong robustness, high samples-learning efficiency and generalization ability according to the following core ideas: learning from the heuristic evidence brought by the brain nerve experiments, analyzing the theory and performance of the mainstream AI method, constructing the equivalent mathematical model based on biological experiments and introducing strict mathematical theory to prove its theoretical validity, developing computer program to apply the feasibility of the model is verified by intelligent scenarios of mathematics, engineering and literature. The main contributions of this article:
+
+  \begin{itemize}
+  \item \textbf{A detailed analysis of the optic nerve two-photon imaging experiment of awake macaques and a meaningful conclusion}:which makes the model design of this paper can learn from the biological principle mechanism.
+  \item \textbf{Introducing strict mathematical theories to construct the learning/reasoning system and some meaningful mathematical conclusions are also given.}:the full integration of the model and mathematical theory in this paper makes the research results theoretically strict.
+  \item \textbf{Developing highly reusable programs for multiple application scenarios}:which proves that the model in this paper is feasible in multiple application scenarios.
+  \end{itemize}
+
+  This paper not only has certain reference value in the theory of AI, but more importantly, the research conclusions and application development have certain reference significance for the design and the development of robust and practical artificial intelligent systems. Several key technologies have been obtained. The actual application has achieved good results.
+
+\enkeywords{Human-level Intelligence, Learning and Reasoning System, Computational Neural Science, Real Analysis and Functional Analysis, Linux Programming}
+\end{enabstract}
