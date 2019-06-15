@@ -1,4 +1,4 @@
-# USTC Thesis
+# 请使用中国原子能科学研究院学位论文Latex模板
 
 [![Travis Building](https://travis-ci.org/ustctug/ustcthesis.svg?branch=master)](https://travis-ci.org/ustctug/ustcthesis)
 [![GitHub release](https://img.shields.io/github/release/ustctug/ustcthesis.svg)](https://github.com/ustctug/ustcthesis/releases/latest)
@@ -25,6 +25,7 @@
 
 ><<中国原子能科学研究院研究生学位论文的编写指南>>:
 >http://www.ciae.ac.cn/yjs/index_811.htm
+
 >中国科学院大学学位论文 LaTeX 模板:
 >https://github.com/xiaoyao9933/UCASthesis
 
